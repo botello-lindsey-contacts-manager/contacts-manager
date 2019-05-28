@@ -54,6 +54,31 @@ public class ShowContacts {
         } return output;
     }
 
+
+    public static void deleteContact(String directory, String filename, String contact){
+//        Path file = Paths.get(directory, filename);
+
+       try {
+           List<String> lines = Files.readAllLines(Paths.get(directory, filename));
+           List<String> updatedList = new ArrayList<>();
+
+           for (String line : lines) {
+               if (!line.contains(contact)) {
+                   updatedList.add(line);
+               }
+
+           }
+
+           Files.write(Paths.get(directory, filename), updatedList);
+
+       } catch (IOException e) {
+           e.printStackTrace();
+       }
+
+       showContacts(directory, filename);
+    }
+
+
     public static void main(String[] args) {
         String directory = "data";
         String filename = "contacts.txt";
@@ -80,6 +105,8 @@ public class ShowContacts {
         ArrayList<String> contacts = new ArrayList<>(List.of("Nadia - 1234567890", "jason - 0987654321"));
 
 
+        addContact(directory, filename, contacts);
+
         showContacts(directory, filename);
 
         Scanner sc = new Scanner(System.in);
@@ -88,6 +115,16 @@ public class ShowContacts {
         String search = sc.nextLine();
 
         System.out.println(searchContact(directory, filename, search));
+
+        System.out.println("who do you want to redact?");
+        search = sc.nextLine();
+
+        deleteContact(directory, filename, search);
+
+        showContacts(directory, filename);
+
+
+
 
     }
 }
