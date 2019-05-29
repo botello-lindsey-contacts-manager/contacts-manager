@@ -9,6 +9,10 @@ import java.util.List;
 import java.util.Scanner;
 
 public class ShowContacts {
+
+    public static String directory = "data";
+    public static String filename = "contacts.txt";
+
     public static void showContacts(String directory, String filename){
         Path file = Paths.get(directory, filename);
         try {
@@ -16,8 +20,9 @@ public class ShowContacts {
             System.out.println("Name | Phone number\n" +
                     "-----------------");
             for(String contact: contactList){
-                String name = contact.split(" - ")[0];
-                String number = contact.split(" - ")[1];
+                String name = contact.split(" = ")[0];
+                String number = contact.split(" = ")[1];
+
                 System.out.println(name + " | " + number);
             }
         } catch (IOException e) {
@@ -25,7 +30,17 @@ public class ShowContacts {
         }
     }
 
-    public static void addContact(String directory, String filename, ArrayList<String> list){
+    public static void addContact(String directory, String filename){
+        Scanner sc = new Scanner(System.in);
+        System.out.println("please enter a name:");
+        String name = sc.nextLine();
+        System.out.println("please enter a phone number");
+        String number = sc.nextLine();
+
+        number = number.substring(0,3) + "-" + number.substring(3, 6) + "-" + number.substring(6);
+
+        String contact = name + " = " + number;
+        ArrayList<String> list = new ArrayList<>(List.of(contact));
         try {
             Files.write(
                     Paths.get(directory, filename),
@@ -37,7 +52,11 @@ public class ShowContacts {
         }
     }
 
-    public static String searchContact(String directory, String filename, String contact){
+    public static String searchContact(String directory, String filename){
+        Scanner sc = new Scanner(System.in);
+        System.out.println("please enter a name:");
+        String contact = sc.nextLine();
+
         Path file = Paths.get(directory, filename);
             String output = "Contact not found";
         try {
@@ -55,8 +74,10 @@ public class ShowContacts {
     }
 
 
-    public static void deleteContact(String directory, String filename, String contact){
-//        Path file = Paths.get(directory, filename);
+    public static void deleteContact(String directory, String filename){
+        Scanner sc = new Scanner(System.in);
+        System.out.println("please enter the name of the contact that you would like to remove:");
+        String contact = sc.nextLine();
 
        try {
            List<String> lines = Files.readAllLines(Paths.get(directory, filename));
@@ -67,6 +88,9 @@ public class ShowContacts {
                    updatedList.add(line);
                }
 
+           }
+           if (! updatedList.contains(contact)){
+               System.out.println("\nContact not found\n");
            }
 
            Files.write(Paths.get(directory, filename), updatedList);
@@ -79,9 +103,8 @@ public class ShowContacts {
     }
 
 
-    public static void main(String[] args) {
-        String directory = "data";
-        String filename = "contacts.txt";
+    /*public static void main(String[] args) {
+
 
         Path dataDirectory = Paths.get(directory);
         Path dataFile = Paths.get(directory, filename);
@@ -107,7 +130,7 @@ public class ShowContacts {
 
         addContact(directory, filename, contacts);
 
-        showContacts(directory, filename);
+
 
         Scanner sc = new Scanner(System.in);
 
@@ -119,12 +142,12 @@ public class ShowContacts {
         System.out.println("who do you want to redact?");
         search = sc.nextLine();
 
-        deleteContact(directory, filename, search);
-
-        showContacts(directory, filename);
+        deleteContact(directory, filename, search);*/
 
 
 
 
-    }
+
+
+
 }
