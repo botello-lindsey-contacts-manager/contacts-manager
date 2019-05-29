@@ -63,8 +63,8 @@ public class ShowContacts {
             List<String> contactList = Files.readAllLines(file);
             for(String item: contactList){
                 if(item.contains(contact)){
-                    String name = item.split("-")[0];
-                    String number = item.split("-")[1];
+                    String name = item.split("=")[0];
+                    String number = item.split("=")[1];
                     return output = name + " | " + number;
                 }
             }
