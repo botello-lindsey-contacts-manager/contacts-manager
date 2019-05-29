@@ -40,7 +40,19 @@ public class ShowContacts {
         number = number.substring(0,3) + "-" + number.substring(3, 6) + "-" + number.substring(6);
 
         String contact = name + " = " + number;
-        ArrayList<String> list = new ArrayList<>(List.of(contact));
+
+        if (searchContact(directory, filename, name)) {
+
+            System.out.printf("There's already a contact named %s. Do you want to overwrite it? (Yes/No)", name);
+            String answer = sc.nextLine();
+
+            if (answer.equalsIgnoreCase("Yes")) {
+                overwriteContact(directory, filename, name, contact);
+                System.out.println("You have successfully altered your contact.");
+            }
+
+        } else {
+            ArrayList<String> list = new ArrayList<>(List.of(contact));
         try {
             Files.write(
                     Paths.get(directory, filename),
@@ -49,8 +61,41 @@ public class ShowContacts {
             );
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        } }
+
     }
+
+
+    public static void overwriteContact(String directory, String filename, String name, String contact){
+
+        List<String> lines = null;
+
+        try {
+            lines = Files.readAllLines(Paths.get(directory, filename));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        List<String> newList = new ArrayList<>();
+
+        for (String line : lines) {
+            if (line.contains(name)) {
+                newList.add(contact);
+                continue;
+            }
+            newList.add(line);
+        }
+
+        try {
+            Files.write(Paths.get(directory, filename), newList);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+
 
     public static String searchContact(String directory, String filename){
         Scanner sc = new Scanner(System.in);
@@ -72,6 +117,25 @@ public class ShowContacts {
             e.printStackTrace();
         } return output;
     }
+
+    public static Boolean searchContact(String directory, String filename, String contact){
+
+        Path file = Paths.get(directory, filename);
+        Boolean output = true;
+
+        try {
+            List<String> contactList = Files.readAllLines(file);
+            for(String item: contactList){
+                if(item.contains(contact)){
+                    return output;
+                }
+            }
+        } catch(IOException e){
+            e.printStackTrace();
+        } return !output;
+
+    }
+
 
 
     public static void deleteContact(String directory, String filename){
@@ -101,52 +165,6 @@ public class ShowContacts {
 
        showContacts(directory, filename);
     }
-
-
-    /*public static void main(String[] args) {
-
-
-        Path dataDirectory = Paths.get(directory);
-        Path dataFile = Paths.get(directory, filename);
-        if (Files.notExists(dataFile)) {
-            try {
-                Files.createDirectories(dataDirectory);
-            } catch(IOException e){
-                e.printStackTrace();
-            }
-        }
-
-        if (! Files.exists(dataFile)) {
-
-            try {
-                Files.createFile(dataFile);
-            } catch(IOException e){
-                e.printStackTrace();
-            }
-        }
-
-        ArrayList<String> contacts = new ArrayList<>(List.of("Nadia - 1234567890", "jason - 0987654321"));
-
-
-        addContact(directory, filename, contacts);
-
-
-
-        Scanner sc = new Scanner(System.in);
-
-        System.out.println("who do you want to search?");
-        String search = sc.nextLine();
-
-        System.out.println(searchContact(directory, filename, search));
-
-        System.out.println("who do you want to redact?");
-        search = sc.nextLine();
-
-        deleteContact(directory, filename, search);*/
-
-
-
-
 
 
 
