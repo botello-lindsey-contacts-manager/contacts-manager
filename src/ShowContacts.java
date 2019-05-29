@@ -13,7 +13,7 @@ public class ShowContacts {
     public static String directory = "data";
     public static String filename = "contacts.txt";
 
-    public static void showContacts(String directory, String filename){
+    public static void showContacts(String directory, String filename) {
         Path file = Paths.get(directory, filename);
         try {
             List<String> contactList = Files.readAllLines(file);
@@ -26,7 +26,7 @@ public class ShowContacts {
             System.out.format("| Name     | Number          |%n");
             System.out.format("+----------+-----------------+%n");
 
-            for(String contact: contactList){
+            for (String contact : contactList) {
                 String name = contact.split(" = ")[0];
                 String number = contact.split(" = ")[1];
 
@@ -36,20 +36,19 @@ public class ShowContacts {
             System.out.format("+----------+-----------------+%n");
 
 
-
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public static void addContact(String directory, String filename){
+    public static void addContact(String directory, String filename) {
         Scanner sc = new Scanner(System.in);
         System.out.println("please enter a name:");
         String name = sc.nextLine();
         System.out.println("please enter a phone number");
         String number = sc.nextLine();
 
-        number = number.substring(0,3) + "-" + number.substring(3, 6) + "-" + number.substring(6);
+        number = number.substring(0, 3) + "-" + number.substring(3, 6) + "-" + number.substring(6);
 
         String contact = name + " = " + number;
 
@@ -65,20 +64,21 @@ public class ShowContacts {
 
         } else {
             ArrayList<String> list = new ArrayList<>(List.of(contact));
-        try {
-            Files.write(
-                    Paths.get(directory, filename),
-                    list,
-                    StandardOpenOption.APPEND
-            );
-        } catch (IOException e) {
-            e.printStackTrace();
-        } }
+            try {
+                Files.write(
+                        Paths.get(directory, filename),
+                        list,
+                        StandardOpenOption.APPEND
+                );
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 
     }
 
 
-    public static void overwriteContact(String directory, String filename, String name, String contact){
+    public static void overwriteContact(String directory, String filename, String name, String contact) {
 
         List<String> lines = null;
 
@@ -108,76 +108,75 @@ public class ShowContacts {
     }
 
 
-
-    public static String searchContact(String directory, String filename){
+    public static String searchContact(String directory, String filename) {
         Scanner sc = new Scanner(System.in);
         System.out.println("please enter a name:");
         String contact = sc.nextLine();
 
         Path file = Paths.get(directory, filename);
-            String output = "Contact not found";
+        String output = "Contact not found";
         try {
             List<String> contactList = Files.readAllLines(file);
-            for(String item: contactList){
-                if(item.contains(contact)){
+            for (String item : contactList) {
+                if (item.contains(contact)) {
                     String name = item.split("=")[0];
                     String number = item.split("=")[1];
                     return output = name + " | " + number;
                 }
             }
-        } catch(IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
-        } return output;
+        }
+        return output;
     }
 
-    public static Boolean searchContact(String directory, String filename, String contact){
+    public static Boolean searchContact(String directory, String filename, String contact) {
 
         Path file = Paths.get(directory, filename);
         Boolean output = true;
 
         try {
             List<String> contactList = Files.readAllLines(file);
-            for(String item: contactList){
-                if(item.contains(contact)){
+            for (String item : contactList) {
+                if (item.contains(contact)) {
                     return output;
                 }
             }
-        } catch(IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
-        } return !output;
+        }
+        return !output;
 
     }
 
 
-
-    public static void deleteContact(String directory, String filename){
+    public static void deleteContact(String directory, String filename) {
         Scanner sc = new Scanner(System.in);
         System.out.println("please enter the name of the contact that you would like to remove:");
         String contact = sc.nextLine();
 
-       try {
-           List<String> lines = Files.readAllLines(Paths.get(directory, filename));
-           List<String> updatedList = new ArrayList<>();
+        try {
+            List<String> lines = Files.readAllLines(Paths.get(directory, filename));
+            List<String> updatedList = new ArrayList<>();
 
-           for (String line : lines) {
-               if (!line.contains(contact)) {
-                   updatedList.add(line);
-               }
+            for (String line : lines) {
+                if (!line.contains(contact)) {
+                    updatedList.add(line);
+                }
 
-           }
-           if (! updatedList.contains(contact)){
-               System.out.println("\nContact not found\n");
-           }
+            }
+            if (!updatedList.contains(contact)) {
+                System.out.println("\nContact not found\n");
+            }
 
-           Files.write(Paths.get(directory, filename), updatedList);
+            Files.write(Paths.get(directory, filename), updatedList);
 
-       } catch (IOException e) {
-           e.printStackTrace();
-       }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-       showContacts(directory, filename);
+        showContacts(directory, filename);
     }
-
 
 
 }

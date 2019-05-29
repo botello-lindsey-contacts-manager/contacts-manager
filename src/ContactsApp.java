@@ -7,8 +7,8 @@ public class ContactsApp {
 
     }
 
-    public static void userInterface(){
-            Scanner sc = new Scanner(System.in);
+    public static void userInterface() {
+        Scanner sc = new Scanner(System.in);
 
 
         System.out.println("                       \t  .--.\n" +
@@ -42,9 +42,8 @@ public class ContactsApp {
                 "   | [_=\n");
 
 
-
-            int choice = sc.nextInt();
-        switch(choice){
+        int choice = sc.nextInt();
+        switch (choice) {
 
             case 1:
                 ShowContacts.showContacts(ShowContacts.directory, ShowContacts.filename);
