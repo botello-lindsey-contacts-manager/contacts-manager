@@ -17,14 +17,26 @@ public class ShowContacts {
         Path file = Paths.get(directory, filename);
         try {
             List<String> contactList = Files.readAllLines(file);
-            System.out.println("Name | Phone number\n" +
-                    "-----------------");
+//            System.out.println("Name | Phone number\n" +
+//                    "-----------------");
+
+            String leftAlignFormat = "| %-8s | %-15s |%n";
+
+            System.out.format("+----------+-----------------+%n");
+            System.out.format("| Name     | Number          |%n");
+            System.out.format("+----------+-----------------+%n");
+
             for(String contact: contactList){
                 String name = contact.split(" = ")[0];
                 String number = contact.split(" = ")[1];
 
-                System.out.println(name + " | " + number);
+                System.out.format(leftAlignFormat, name, number);
             }
+
+            System.out.format("+----------+-----------------+%n");
+
+
+
         } catch (IOException e) {
             e.printStackTrace();
         }
