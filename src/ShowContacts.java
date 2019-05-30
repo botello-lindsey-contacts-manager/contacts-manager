@@ -165,9 +165,7 @@ public class ShowContacts {
                 }
 
             }
-            if (!updatedList.contains(contact)) {
-                System.out.println("\nContact not found\n");
-            }
+
 
             Files.write(Paths.get(directory, filename), updatedList);
 
